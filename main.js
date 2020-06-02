@@ -11,8 +11,8 @@ const winningCombinations = [
     [3, 6, 9],
     [1, 5, 9],
     [3, 5, 7]
-
 ];
+
 // Get all .grid-cell elements from the DOM and store in cellElementArray (see Resources links below):
 let cellElementArray = document.querySelectorAll('.grid-cell');
 // Loop over each element in our cellElementArray:
@@ -26,63 +26,62 @@ for (let elementIndex = 0; elementIndex < cellElementArray.length; elementIndex 
 
         if (clickedCellElement.innerHTML === "") {
             if (currentPlayer === "X") {
-                currentPlayer = "O"
                 clickedCellElement.innerHTML = "X"
-                playerXSelections.push(Number(clickedCellElement.id))                
-                
-               if( checkForWin(winningCombinations,playerXSelections)){
-                   alert ("X wins")
-                   resetBoard(cellElementArray)
-               }
-
+                currentPlayer = "O"
+                playerXSelections.push(Number(clickedCellElement.id))
+                if (checkForWin(winningCombinations, playerXSelections)) {
+                    alert("PlayerOneWin")
+                    resetBoard()
+                }
             } else {
                 clickedCellElement.innerHTML = "O"
                 currentPlayer = "X"
                 playerOSelections.push(Number(clickedCellElement.id))
-                if(checkForWin(winningCombinations,playerOSelections)){
-                    alert ("O wins")
-                    resetBoard(cellElementArray)
+                if (checkForWin(winningCombinations, playerOSelections)) {
+                    alert("PlayerTwoWin")
+                    resetBoard()
                 }
             }
+            if(checkForDraw()){
+                alert("draw")
+                resetBoard()
+            }
         }
-        // Log the ID of the cell which was just clicked:
-        
     });
-
 }
 
 function checkForWin(winningCombinations, playerSelections) {
     for (let i = 0; i < winningCombinations.length; i = i + 1) {
-        let currentCombinations = winningCombinations[i]
-
+        let currentCombination = winningCombinations[i]
         let matches = 0
-        for (let j = 0; j < currentCombinations.length; j = j + 1) {
-            let currentNumber = currentCombinations[j]
+        for (let j = 0; j < currentCombination.length; j = j + 1) {
+            let currentNumber = currentCombination[j]
             if (playerSelections.includes(currentNumber)) {
                 matches = matches + 1
-
             }
             if (matches === 3) {
                 return true
             }
-
         }
     }
     return false
-
 }
-function resetBoard(elementsArray){
+
+function resetBoard(){
     playerXSelections = []
     playerOSelections = []
-    for ( let i = 0 ; i< elementsArray.length; i = i + 1){
-        let currentElement = elementsArray[i]
+    for(let i = 0; i < cellElementArray.length; i = i + 1){
+        let currentElement = cellElementArray[i]
         currentElement.innerHTML = ""
-
     }
-
 }
-resetBoard(cellElementArray)
-//let testArray = [1, 2, 3]
-//let testArray2 = [7, 2, 5]
+
+function checkForDraw(){
+    if(playerXSelections.length >= 5){
+        return true
+    } else {
+        return false
+    }
+}
 
 // main>div.grid-cell*9 ( this code should be on index.html//
