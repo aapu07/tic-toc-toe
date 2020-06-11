@@ -88,4 +88,3 @@ function ani(element) {
     element.classList.add('animate');
 }
 
-// main>div.grid-cell*9 ( this code should be on index.html//
