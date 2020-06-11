@@ -24,7 +24,7 @@ main {
     height: 96px;
     border: 1px solid blue;
     margin: 1px;
-    font-size: 48px;
+    font-size: 20px;
     display: flex;
     align-items: center;
     justify-content: center;

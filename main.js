@@ -1,6 +1,7 @@
-let currentPlayer = 'X';
+let currentPlayer = 'Julie'; // Julie is the starting player.
 let playerXSelections = [];
 let playerOSelections = [];
+
 const winningCombinations = [
     [1, 2, 3],
     [4, 5, 6],
@@ -12,53 +13,41 @@ const winningCombinations = [
     [3, 5, 7]
 ];
 
-// get elements we need from our HTML
-let winnerDiv = document.querySelector("#winner")
-let turnDiv = document.querySelector("#turn")
-let resetButton = document.querySelector("#reset")
-
-// get an array of all the elements with a class of grid-cell from the page
+// Get all .grid-cell elements from the DOM and store in cellElementArray (see Resources links below):
 let cellElementArray = document.querySelectorAll('.grid-cell');
+// Loop over each element in our cellElementArray:
+for (let elementIndex = 0; elementIndex < cellElementArray.length; elementIndex = elementIndex + 1) {
+    // Set the cell element at cellElementArray[cellIndex] to the currentCell variable:
+    let currentCellElement = cellElementArray[elementIndex]
+    // Add an event listener to the currentCellElement:
+    currentCellElement.addEventListener('click', function (event) {
+        // event.target tells us which element the user clicked (see Resources links below):
+        let clickedCellElement = event.target;
 
-// loop through cellElementArray and add a "click" event listener to each element
-for (let i = 0; i < cellElementArray.length; i = i + 1) {
-    let currentCellElement = cellElementArray[i]
-    currentCellElement.addEventListener('click', moveHandler);
-}
-
-// add click event listener to reset button
-resetButton.addEventListener("click", resetBoard)
-
-function moveHandler(event) {
-    let clickedCellElement = event.target;
-    if(winnerDiv.innerHTML === ""){
         if (clickedCellElement.innerHTML === "") {
-            startAnimation(clickedCellElement)
-            if (currentPlayer === "X") {
-                clickedCellElement.innerHTML = "X"
-                turnDiv.innerHTML = "X's turn"
-                currentPlayer = "O"
+            if (currentPlayer === "Julie") {
+                clickedCellElement.innerHTML = "Julie"
+                currentPlayer = "Aapu"
                 playerXSelections.push(Number(clickedCellElement.id))
                 if (checkForWin(winningCombinations, playerXSelections)) {
-                    winnerDiv.innerHTML = "X wins!"
-                    turnDiv.innerHTML = "game over:"
+                    alert("Julie wins")
+                    resetBoard()
                 }
             } else {
-                clickedCellElement.innerHTML = "O"
-                turnDiv.innerHTML = "O's turn"
-                currentPlayer = "X"
+                clickedCellElement.innerHTML = "Aapu"
+                currentPlayer = "Julie"
                 playerOSelections.push(Number(clickedCellElement.id))
                 if (checkForWin(winningCombinations, playerOSelections)) {
-                    winnerDiv.innerHTML = "O wins!"
-                    turnDiv.innerHTML = "game over:"
+                    alert("Aapu wins")
+                    resetBoard()
                 }
             }
-            if (checkForDraw()) {
-                winnerDiv.innerHTML = "draw"
-                turnDiv.innerHTML = "game over:"
+            if(checkForDraw()){
+                alert("draw")
+                resetBoard()
             }
         }
-    }
+    });
 }
 
 function checkForWin(winningCombinations, playerSelections) {
@@ -78,33 +67,25 @@ function checkForWin(winningCombinations, playerSelections) {
     return false
 }
 
-function resetBoard() {
+function resetBoard(){
     playerXSelections = []
     playerOSelections = []
-    for (let i = 0; i < cellElementArray.length; i = i + 1) {
+    for(let i = 0; i < cellElementArray.length; i = i + 1){
         let currentElement = cellElementArray[i]
         currentElement.innerHTML = ""
     }
-    winnerDiv.innerHTML = ""
-    turnDiv.innerHTML = ""
 }
 
-function checkForDraw() {
-    if (playerXSelections.length >= 5) {
+function checkForDraw(){
+    if(playerXSelections.length >= 5){
         return true
     } else {
         return false
     }
 }
 
-function startAnimation(element) {
-    return element.animate([
-        // keyframes
-        { transform: 'scale(1)' },
-        { transform: 'scale(0.5)' },
-        { transform: 'scale(1)' },
-    ], {
-        // timing options
-        duration: 500
-    });
+function ani(element) {
+    element.classList.add('animate');
 }
+
+// main>div.grid-cell*9 ( this code should be on index.html//
